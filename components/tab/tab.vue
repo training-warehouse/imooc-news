@@ -2,7 +2,7 @@
 	<view class="tab">
 		<scroll-view scroll-x="true" class="tab-scroll">
 			<view class="tab-scroll__box">
-				<view class="tab-scroll__item" v-for="(item,index) in list" :key="index">
+				<view class="tab-scroll__item" v-for="item in list" :key="item._id">
 					{{item.name}}
 				</view>
 			</view>
@@ -16,34 +16,16 @@
 <script>
 	export default {
 		name: "tab",
+		props: {
+			list: {
+				type: Array,
+				default () {
+					return []
+				}
+			}
+		},
 		data() {
-			return {
-				list: [{
-						name: 'uni-app'
-					},
-					{
-						name: 'H5'
-					},
-					{
-						name: 'html'
-					},
-					{
-						name: 'QQ'
-					},
-					{
-						name: 'Vue'
-					},
-					{
-						name: 'React'
-					},
-					{
-						name: 'Python'
-					},
-					{
-						name: 'Go'
-					},
-				]
-			};
+			return {};
 		}
 	}
 </script>

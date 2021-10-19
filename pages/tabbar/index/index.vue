@@ -1,19 +1,26 @@
 <template>
 	<view class="content">
 		<navbar></navbar>
-		<tab></tab>
+		<tab :list="tabList"></tab>
 	</view>
 </template>
 
 <script>
 	export default {
 		data() {
-			return {}
+			return {
+				tabList: []
+			}
 		},
 		onLoad() {
-
+			this.getLabel()
 		},
 		methods: {
+			getLabel() {
+				uniCloud.callFunction({
+					name: 'get_label',
+				}).then(res => this.tabList = res.result.data)
+			}
 
 		}
 	}
