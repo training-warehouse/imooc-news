@@ -1,20 +1,25 @@
 <template>
 	<view class="home">
 		<navbar></navbar>
-		<tab :list="tabList" @tab="tab"></tab>
-		<list-scroll>
-			<list-card mode="base"></list-card>
-			<list-card mode="column"></list-card>
-			<list-card mode="image"></list-card>
-		</list-scroll>
+		<tab :list="tabList" @tab="tab" :tabIndex="tabIndex"></tab>
+		<view class="home-list">
+			<list :tab="tabList" :activeIndex="activeIndex" @change="change"></list>
+		</view>
 	</view>
 </template>
 
 <script>
+	import list from '@/components/list/list.vue'
+
 	export default {
+		components:{
+			list
+		},
 		data() {
 			return {
-				tabList: []
+				tabList: [],
+				tabIndex: 0,
+				activeIndex: 0
 			}
 		},
 		onLoad() {
@@ -24,11 +29,14 @@
 			getLabel() {
 				this.$api.get_label().then(res => this.tabList = res.data)
 			},
+			change(current) {
+				this.tabIndex = current
+			},
 			tab({
 				data,
 				index
 			}) {
-
+				this.activeIndex = index
 			}
 
 		}
@@ -45,6 +53,11 @@
 			flex-direction: column;
 			flex: 1;
 			overflow: hidden;
+
+			.home-list {
+				flex: 1;
+				box-sizing: border-box;
+			}
 		}
 	}
 </style>
