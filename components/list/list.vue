@@ -1,7 +1,7 @@
 <template>
 	<swiper class="home-swiper" @change="change" :current="activeIndex">
 		<swiper-item class="swiper-item" v-for="(item,index) in tab" :key="index">
-			<list-item></list-item>
+			<list-item :list="listCatchData[index]"></list-item>
 		</swiper-item>
 	</swiper>
 </template>
@@ -28,15 +28,31 @@
 		},
 		data() {
 			return {
-
+				list: [],
+				listCatchData: {}
 			};
+		},
+		watch: {
+			tab(newVal, oldVal) {
+				if (newVal.length === 0) return
+				this.getList(this.activeIndex)
+			}
 		},
 		methods: {
 			change(e) {
 				const {
 					current
 				} = e.detail
+				this.getList(current)
 				this.$emit('change', current)
+			},
+			getList(current) {
+				this.$api.get_list({
+					name: this.tab[current].name
+				}).then(res => {
+					// 数据懒加载
+					this.$set(this.listCatchData, current, res.data)
+				})
 			}
 		}
 	}
