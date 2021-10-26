@@ -12,7 +12,7 @@
 	import list from '@/components/list/list.vue'
 
 	export default {
-		components:{
+		components: {
 			list
 		},
 		data() {
@@ -27,10 +27,16 @@
 		},
 		methods: {
 			getLabel() {
-				this.$api.get_label().then(res => this.tabList = res.data)
+				this.$api.get_label().then(res => {
+					res.data.unshift({
+						'name': '全部'
+					})
+					this.tabList = res.data
+				})
 			},
 			change(current) {
 				this.tabIndex = current
+				this.activeIndex = current
 			},
 			tab({
 				data,

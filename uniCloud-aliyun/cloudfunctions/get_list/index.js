@@ -3,13 +3,25 @@
 const db = uniCloud.database()
 exports.main = async (event, context) => {
 	const {
-		name
+		name,
+		page = 1,
+		pageSize = 10
 	} = event
-	const list = await db.collection('article').aggregate().match({
-		classify: name
-	}).project({
-		content: 0
-	}).end()
+
+	let matchObj = {}
+	if (name !== '全部') {
+		matchObj = {
+			classify: name
+		}
+	}
+
+	const list = await db.collection('article').aggregate().match(matchObj).project({
+		content: 0,
+	})
+	// 跳过多少条数据
+	.skip(pageSize * (page - 1))
+	.limit(pageSize)
+	.end()
 
 	// const list = await db.collection('article').field({
 	// 	content: false
